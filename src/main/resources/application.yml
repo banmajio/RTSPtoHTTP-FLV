@@ -1,0 +1,11 @@
+server:
+  port: ${CAMERASERVER_SERVER_PORT:8082}
+  servlet:
+   context-path: /camera  
+config:
+#直播流保活时间(分钟)
+  keepalive: ${CAMERASERVER_KEEPALIVE:5}
+#nginx推送地址
+  push_ip: ${CAMERASERVER_PUSH_IP:127.0.0.1}
+#nginx推送端口
+  push_port: ${CAMERASERVER_PUSH_PORT:1935}
