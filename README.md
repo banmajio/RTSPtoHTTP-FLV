@@ -1,7 +1,7 @@
 # RTSPtoRTMP
 # 使用JavaCV开发的rtsp流转rtmp流并进行推流的流媒体服务
 
->觉得不错就点个star吧！！！
+>觉得不错就点个**star**吧！！！
 
 >**个人博客：[banmajio's blog](https://www.banmajio.com/)**
 >**csdn博客：[banmajio's csdn](https://blog.csdn.net/weixin_40777510)**
@@ -20,7 +20,7 @@
 >1.如果服务部署在Docker环境下，本机ip是动态的，并非固定为127.0.0.1，所以需要动态获取nginx域名解析为ip，rtmp推送地址才能生效，可以使用InetAddress.getByName(www.baidu.com).getHostAddress();这样的方式获取解析到的ip地址。
 >2.目前出现的一个bug尚未解决，如果传入的设备ip填写错误，在JavaCV的FFmpegFrameGrabber构造器在调用start()方法是会出现阻塞现象，导致构造器无法释放，后续推流工作无法继续。【以优化：[JavaCV中FFmpegFrameGrabber调用start()方法时出现阻塞的解决办法](https://www.banmajio.com/post/9bf41e2c.html#more)】
 
-项目搭建过程请参考本人博文：[FFmpeg转封装rtsp到rtmp（无需转码，低资源消耗）](https://www.banmajio.com/post/638986b0.html#more)**
+>**项目搭建过程请参考本人博文：[FFmpeg转封装rtsp到rtmp（无需转码，低资源消耗）](https://www.banmajio.com/post/638986b0.html#more)**
 
 
 
