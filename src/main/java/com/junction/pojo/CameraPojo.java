@@ -3,6 +3,7 @@ package com.junction.pojo;
 import java.io.Serializable;
 
 /**
+ * 相机Pojo
  * 摄像头Pojo
  *
  * @author wuguodong

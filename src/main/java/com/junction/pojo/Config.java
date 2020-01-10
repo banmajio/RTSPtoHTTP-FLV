@@ -16,7 +16,7 @@ public class Config {
     /**
      * 保活时长（分钟）
      */
-    private String keepalive;
+    private Integer keepalive;
 
     /**
      * 推送地址
@@ -28,11 +28,11 @@ public class Config {
      */
     private String push_port;
 
-    public String getKeepalive() {
+    public Integer getKeepalive() {
         return keepalive;
     }
 
-    public void setKeepalive(String keepalive) {
+    public void setKeepalive(Integer keepalive) {
         this.keepalive = keepalive;
     }
 

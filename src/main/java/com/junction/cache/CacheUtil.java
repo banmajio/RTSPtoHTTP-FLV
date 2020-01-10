@@ -17,12 +17,12 @@ import com.junction.pojo.Config;
  */
 public final class CacheUtil {
 
-    /*
+    /**
      * 保存已经开始推的流
      */
     public static Map<String, CameraPojo> STREAMMAP = new ConcurrentHashMap<String, CameraPojo>();
 
-    /*
+    /**
      * 保存服务启动时间
      */
     public static long STARTTIME;

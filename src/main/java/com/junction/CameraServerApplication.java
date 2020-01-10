@@ -6,13 +6,18 @@ import cn.hutool.log.LogFactory;
 import com.junction.cache.CacheUtil;
 import com.junction.thread.CameraThread;
 import com.junction.util.CameraPush;
-import com.junction.util.TimerUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PreDestroy;
 
+
+/**
+ * 摄像机服务器应用程序
+ */
+@EnableScheduling
 @SpringBootApplication
 public class CameraServerApplication {
 
@@ -30,9 +35,7 @@ public class CameraServerApplication {
     public void destory() {
         // 关闭线程池
         CameraThread.MyRunnable.es.shutdownNow();
-        // 销毁定时器
-        TimerUtil.timer.cancel();
-        
+
         logger.info("======> 释放空间...");
     }
 }
