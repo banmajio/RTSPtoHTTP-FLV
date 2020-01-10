@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -24,8 +27,13 @@ import com.junction.pojo.Config;
 @Component
 public class TimerUtil implements CommandLineRunner {
 
+    private static final Log logger = LogFactory.get();
+
+    /**
+     * 配置文件bean
+     */
 	@Autowired
-	private Config config;// 配置文件bean
+	private Config config;
 
 	public static Timer timer;
 
@@ -36,7 +44,7 @@ public class TimerUtil implements CommandLineRunner {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				System.err.println("开始执行定时任务...");
+                logger.info("======> 【定时任务】开始执行...");
 				// 管理缓存
 				if (null != CacheUtil.STREAMMAP && 0 != CacheUtil.STREAMMAP.size()) {
 					Set<String> keys = CacheUtil.STREAMMAP.keySet();
@@ -46,7 +54,7 @@ public class TimerUtil implements CommandLineRunner {
 							long openTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 									.parse(CacheUtil.STREAMMAP.get(key).getOpenTime()).getTime();
 							// 当前系统时间
-							long newTime = new Date().getTime();
+							long newTime = DateUtil.current(false);
 							// 如果通道使用人数为0，则关闭推流
 							if (CacheUtil.STREAMMAP.get(key).getCount() == 0) {
 								// 结束线程
@@ -58,14 +66,14 @@ public class TimerUtil implements CommandLineRunner {
 								CameraController.jobMap.get(key).setInterrupted();
 								CameraController.jobMap.remove(key);
 								CacheUtil.STREAMMAP.remove(key);
-								System.err.println("[定时任务]  关闭" + key + "摄像头...");
+                                logger.info("======> 【定时任务】  关闭 {} 摄像头...", key);
 							}
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
 					}
 				}
-				System.err.println("定时任务执行完毕...");
+                logger.info("======> 【定时任务】执行完毕...");
 			}
 		}, 1, 1000 * 60);
 	}
