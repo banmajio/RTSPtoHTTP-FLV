@@ -22,9 +22,11 @@
 ## 待优化之处：
 
 1.如果服务部署在Docker环境下，本机ip是动态的，并非固定为127.0.0.1，所以需要动态获取nginx域名解析为ip，rtmp推送地址才能生效，可以使用InetAddress.getByName(www.baidu.com).getHostAddress();这样的方式获取解析到的ip地址。
-2.目前出现的一个bug尚未解决，如果传入的设备ip填写错误，在JavaCV的FFmpegFrameGrabber构造器在调用start()方法是会出现阻塞现象，导致构造器无法释放，后续推流工作无法继续。【以优化：[JavaCV中FFmpegFrameGrabber调用start()方法时出现阻塞的解决办法](https://www.banmajio.com/post/9bf41e2c.html#more)】
+2.目前出现的一个bug尚未解决，如果传入的设备ip填写错误，在JavaCV的FFmpegFrameGrabber构造器在调用start()方法是会出现阻塞现象，导致构造器无法释放，后续推流工作无法继续。【已优化：[JavaCV中FFmpegFrameGrabber调用start()方法时出现阻塞的解决办法](https://www.banmajio.com/post/9bf41e2c.html#more)】
+3.目前项目进行历史回放的思路是直接通过rtsp命令添加starttime 和 endtime参数 拉取海康摄像头的rtsp流完成的，存在的问题就是会出现拉到的流解析出来的内容都是空的，而同样的指令在cmd下面确没有问题。该问题目前尚未解决，如果有好的思路可以联系我。
 
 >**项目搭建过程请参考本人博文：[FFmpeg转封装rtsp到rtmp（无需转码，低资源消耗）](https://www.banmajio.com/post/638986b0.html#more)**
 
+>如果有不错的建议或者反馈可以通过QQ：1402325991   邮箱：banmajio@163.com
 
 
