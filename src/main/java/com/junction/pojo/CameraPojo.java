@@ -2,171 +2,115 @@ package com.junction.pojo;
 
 import java.io.Serializable;
 
-/**
- * 相机Pojo
- * 摄像头Pojo
- *
- * @author wuguodong
- * @date
- */
 public class CameraPojo implements Serializable {
+	private static final long serialVersionUID = 8183688502930584159L;
+	private String username;// 摄像头账号
+	private String password;// 摄像头密码
+	private String ip;// 摄像头ip
+	private String channel;// 摄像头通道
+	private String stream;// 摄像头码流
+	private String rtsp;// rtsp地址
+	private String rtmp;// rtmp地址
+	private String startTime;// 回放开始时间
+	private String endTime;// 回放结束时间
+	private String openTime;// 打开时间
+	private int count = 0;// 使用人数
+	private String token;
 
-    private static final long serialVersionUID = 8183688502930584159L;
+	public String getUsername() {
+		return username;
+	}
 
-    /**
-     * 摄像头账号
-     */
-    private String username;
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    /**
-     * 摄像头密码
-     */
-    private String password;
+	public String getPassword() {
+		return password;
+	}
 
-    /**
-     * 摄像头ip
-     */
-    private String ip;
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    /**
-     * 摄像头通道
-     */
-    private String channel;
+	public String getIp() {
+		return ip;
+	}
 
-    /**
-     * 摄像头码流
-     */
-    private String stream;
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
 
-    /**
-     * rtsp地址
-     */
-    private String rtsp;
+	public String getChannel() {
+		return channel;
+	}
 
-    /**
-     * rtmp地址
-     */
-    private String rtmp;
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
 
-    /**
-     * 回放开始时间
-     */
-    private String startTime;
+	public String getStream() {
+		return stream;
+	}
 
-    /**
-     * 回放结束时间
-     */
-    private String endTime;
+	public void setStream(String stream) {
+		this.stream = stream;
+	}
 
-    /**
-     * 打开时间
-     */
-    private String openTime;
+	public String getRtsp() {
+		return rtsp;
+	}
 
-    /**
-     * 使用人数
-     */
-    private int count = 0;
+	public void setRtsp(String rtsp) {
+		this.rtsp = rtsp;
+	}
 
-    /**
-     * token令牌
-     */
-    private String token;
+	public String getRtmp() {
+		return rtmp;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setRtmp(String rtmp) {
+		this.rtmp = rtmp;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getStartTime() {
+		return startTime;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getEndTime() {
+		return endTime;
+	}
 
-    public String getIp() {
-        return ip;
-    }
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
+	public String getOpenTime() {
+		return openTime;
+	}
 
-    public String getChannel() {
-        return channel;
-    }
+	public void setOpenTime(String openTime) {
+		this.openTime = openTime;
+	}
 
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
+	public int getCount() {
+		return count;
+	}
 
-    public String getStream() {
-        return stream;
-    }
+	public void setCount(int count) {
+		this.count = count;
+	}
 
-    public void setStream(String stream) {
-        this.stream = stream;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public String getRtsp() {
-        return rtsp;
-    }
-
-    public void setRtsp(String rtsp) {
-        this.rtsp = rtsp;
-    }
-
-    public String getRtmp() {
-        return rtmp;
-    }
-
-    public void setRtmp(String rtmp) {
-        this.rtmp = rtmp;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getOpenTime() {
-        return openTime;
-    }
-
-    public void setOpenTime(String openTime) {
-        this.openTime = openTime;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 }
