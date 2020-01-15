@@ -1,83 +1,19 @@
 package org.bytedeco.javacv;
 
-import static org.bytedeco.ffmpeg.global.avcodec.AV_PKT_FLAG_KEY;
-import static org.bytedeco.ffmpeg.global.avcodec.av_jni_set_java_vm;
-import static org.bytedeco.ffmpeg.global.avcodec.av_packet_unref;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_alloc_context3;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_decode_audio4;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_decode_video2;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_find_decoder;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_find_decoder_by_name;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_flush_buffers;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_free_context;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_open2;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_parameters_to_context;
-import static org.bytedeco.ffmpeg.global.avcodec.avcodec_register_all;
-import static org.bytedeco.ffmpeg.global.avdevice.avdevice_register_all;
-import static org.bytedeco.ffmpeg.global.avformat.AVSEEK_FLAG_BACKWARD;
-import static org.bytedeco.ffmpeg.global.avformat.AVSEEK_SIZE;
-import static org.bytedeco.ffmpeg.global.avformat.av_dump_format;
-import static org.bytedeco.ffmpeg.global.avformat.av_find_input_format;
-import static org.bytedeco.ffmpeg.global.avformat.av_guess_sample_aspect_ratio;
-import static org.bytedeco.ffmpeg.global.avformat.av_read_frame;
-import static org.bytedeco.ffmpeg.global.avformat.av_register_all;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_alloc_context;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_close_input;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_find_stream_info;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_free_context;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_network_init;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_open_input;
-import static org.bytedeco.ffmpeg.global.avformat.avformat_seek_file;
-import static org.bytedeco.ffmpeg.global.avformat.avio_alloc_context;
-import static org.bytedeco.ffmpeg.global.avutil.AVMEDIA_TYPE_AUDIO;
-import static org.bytedeco.ffmpeg.global.avutil.AVMEDIA_TYPE_VIDEO;
-import static org.bytedeco.ffmpeg.global.avutil.AV_DICT_IGNORE_SUFFIX;
-import static org.bytedeco.ffmpeg.global.avutil.AV_LOG_INFO;
-import static org.bytedeco.ffmpeg.global.avutil.AV_NOPTS_VALUE;
-import static org.bytedeco.ffmpeg.global.avutil.AV_PICTURE_TYPE_I;
-import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_BGR24;
-import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_GRAY8;
-import static org.bytedeco.ffmpeg.global.avutil.AV_PIX_FMT_NONE;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_DBL;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_DBLP;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_FLT;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_FLTP;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_NONE;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_S16;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_S16P;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_S32;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_S32P;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_U8;
-import static org.bytedeco.ffmpeg.global.avutil.AV_SAMPLE_FMT_U8P;
-import static org.bytedeco.ffmpeg.global.avutil.AV_TIME_BASE;
-import static org.bytedeco.ffmpeg.global.avutil.av_d2q;
-import static org.bytedeco.ffmpeg.global.avutil.av_dict_free;
-import static org.bytedeco.ffmpeg.global.avutil.av_dict_get;
-import static org.bytedeco.ffmpeg.global.avutil.av_dict_set;
-import static org.bytedeco.ffmpeg.global.avutil.av_frame_alloc;
-import static org.bytedeco.ffmpeg.global.avutil.av_frame_free;
-import static org.bytedeco.ffmpeg.global.avutil.av_frame_get_best_effort_timestamp;
-import static org.bytedeco.ffmpeg.global.avutil.av_frame_unref;
-import static org.bytedeco.ffmpeg.global.avutil.av_free;
-import static org.bytedeco.ffmpeg.global.avutil.av_get_bytes_per_sample;
-import static org.bytedeco.ffmpeg.global.avutil.av_get_default_channel_layout;
-import static org.bytedeco.ffmpeg.global.avutil.av_get_pix_fmt_name;
-import static org.bytedeco.ffmpeg.global.avutil.av_image_fill_arrays;
-import static org.bytedeco.ffmpeg.global.avutil.av_image_fill_linesizes;
-import static org.bytedeco.ffmpeg.global.avutil.av_image_get_buffer_size;
-import static org.bytedeco.ffmpeg.global.avutil.av_log_get_level;
-import static org.bytedeco.ffmpeg.global.avutil.av_malloc;
-import static org.bytedeco.ffmpeg.global.avutil.av_sample_fmt_is_planar;
-import static org.bytedeco.ffmpeg.global.avutil.av_samples_get_buffer_size;
-import static org.bytedeco.ffmpeg.global.swresample.swr_alloc_set_opts;
-import static org.bytedeco.ffmpeg.global.swresample.swr_convert;
-import static org.bytedeco.ffmpeg.global.swresample.swr_free;
-import static org.bytedeco.ffmpeg.global.swresample.swr_get_out_samples;
-import static org.bytedeco.ffmpeg.global.swresample.swr_init;
-import static org.bytedeco.ffmpeg.global.swscale.SWS_BILINEAR;
-import static org.bytedeco.ffmpeg.global.swscale.sws_freeContext;
-import static org.bytedeco.ffmpeg.global.swscale.sws_getCachedContext;
-import static org.bytedeco.ffmpeg.global.swscale.sws_scale;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
+import org.bytedeco.ffmpeg.avcodec.AVCodec;
+import org.bytedeco.ffmpeg.avcodec.AVCodecContext;
+import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
+import org.bytedeco.ffmpeg.avcodec.AVPacket;
+import org.bytedeco.ffmpeg.avformat.*;
+import org.bytedeco.ffmpeg.avutil.AVDictionary;
+import org.bytedeco.ffmpeg.avutil.AVDictionaryEntry;
+import org.bytedeco.ffmpeg.avutil.AVFrame;
+import org.bytedeco.ffmpeg.avutil.AVRational;
+import org.bytedeco.ffmpeg.swresample.SwrContext;
+import org.bytedeco.ffmpeg.swscale.SwsContext;
+import org.bytedeco.javacpp.*;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -90,35 +26,17 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicLong;
 
-import org.bytedeco.ffmpeg.avcodec.AVCodec;
-import org.bytedeco.ffmpeg.avcodec.AVCodecContext;
-import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
-import org.bytedeco.ffmpeg.avcodec.AVPacket;
-import org.bytedeco.ffmpeg.avformat.AVFormatContext;
-import org.bytedeco.ffmpeg.avformat.AVIOContext;
-import org.bytedeco.ffmpeg.avformat.AVIOInterruptCB;
-import org.bytedeco.ffmpeg.avformat.AVInputFormat;
-import org.bytedeco.ffmpeg.avformat.AVStream;
-import org.bytedeco.ffmpeg.avformat.Read_packet_Pointer_BytePointer_int;
-import org.bytedeco.ffmpeg.avformat.Seek_Pointer_long_int;
-import org.bytedeco.ffmpeg.avutil.AVDictionary;
-import org.bytedeco.ffmpeg.avutil.AVDictionaryEntry;
-import org.bytedeco.ffmpeg.avutil.AVFrame;
-import org.bytedeco.ffmpeg.avutil.AVRational;
-import org.bytedeco.ffmpeg.presets.avformat;
-import org.bytedeco.ffmpeg.swresample.SwrContext;
-import org.bytedeco.ffmpeg.swscale.SwsContext;
-import org.bytedeco.javacpp.BytePointer;
-import org.bytedeco.javacpp.DoublePointer;
-import org.bytedeco.javacpp.IntPointer;
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.Pointer;
-import org.bytedeco.javacpp.PointerPointer;
-import org.bytedeco.javacpp.PointerScope;
+import static org.bytedeco.ffmpeg.global.avcodec.*;
+import static org.bytedeco.ffmpeg.global.avdevice.avdevice_register_all;
+import static org.bytedeco.ffmpeg.global.avformat.*;
+import static org.bytedeco.ffmpeg.global.avutil.*;
+import static org.bytedeco.ffmpeg.global.swresample.*;
+import static org.bytedeco.ffmpeg.global.swscale.*;
 
 public class FFmpegFrameGrabber extends FrameGrabber {
+
+    private static final Log logger = LogFactory.get();
 
 	public static String[] getDeviceDescriptions() throws Exception {
 		tryLoad();
@@ -334,7 +252,7 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 					return size;
 				}
 			} catch (Throwable t) {
-				System.err.println("Error on InputStream.read(): " + t);
+				logger.error("Error on InputStream.read(): {}", t);
 				return -1;
 			}
 		}
@@ -393,7 +311,7 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 				}
 				return whence == AVSEEK_SIZE ? size : 0;
 			} catch (Throwable t) {
-				System.err.println("Error on InputStream.reset() or skip(): " + t);
+                logger.error("Error on InputStream.reset() or skip(): {}", t);
 				return -1;
 			}
 		}

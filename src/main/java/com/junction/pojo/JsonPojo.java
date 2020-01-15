@@ -3,38 +3,50 @@ package com.junction.pojo;
 import java.io.Serializable;
 
 /**
+ * @author wuguodong
  * @Title JsonPojo.java
  * @description 通用POJO
  * @time 2019年12月16日 上午9:32:08
- * @author wuguodong
  **/
 public class JsonPojo implements Serializable {
-	private Object obj;// 对象
-	private String code;// 状态码
-	private String msg;// 信息
 
-	public Object getObj() {
-		return obj;
-	}
+    /**
+     * 对象
+     */
+    private Object obj;
 
-	public void setObj(Object obj) {
-		this.obj = obj;
-	}
+    /**
+     * 状态码
+     */
+    private String code;
 
-	public String getCode() {
-		return code;
-	}
+    /**
+     * 信息
+     */
+    private String msg;
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public Object getObj() {
+        return obj;
+    }
 
-	public String getMsg() {
-		return msg;
-	}
+    public void setObj(Object obj) {
+        this.obj = obj;
+    }
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
 }
