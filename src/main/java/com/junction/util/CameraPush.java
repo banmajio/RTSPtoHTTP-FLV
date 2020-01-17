@@ -10,8 +10,9 @@ import org.bytedeco.ffmpeg.avcodec.AVPacket;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
 import com.junction.pojo.CameraPojo;
 import com.junction.pojo.Config;
@@ -23,6 +24,9 @@ import com.junction.pojo.Config;
  * @author wuguodong
  **/
 public class CameraPush {
+
+	private final static Logger logger = LoggerFactory.getLogger(CameraPush.class);
+
 	// 配置类
 	private static Config config;
 
@@ -78,48 +82,59 @@ public class CameraPush {
 		Socket rtspSocket = new Socket();
 		Socket rtmpSocket = new Socket();
 		// 建立TCP Scoket连接，超时时间1s，如果成功继续执行，否则return
+		logger.debug("******   TCPCheck    BEGIN   ******");
 		try {
 			rtspSocket.connect(new InetSocketAddress(cameraPojo.getIp(), 554), 1000);
 		} catch (IOException e) {
 			grabber.stop();
 			grabber.close();
 			rtspSocket.close();
-			System.err.println("与拉流地址建立连接失败...");
+			logger.error("与拉流IP：   " + cameraPojo.getIp() + "   端口：   554    建立TCP连接失败！");
 			return null;
 		}
-
 		try {
-			rtmpSocket.connect(new InetSocketAddress(IpUtil.IpConvert(config.getPush_ip()),
+			rtmpSocket.connect(new InetSocketAddress(IpUtil.IpConvert(config.getPush_host()),
 					Integer.parseInt(config.getPush_port())), 1000);
 		} catch (IOException e) {
 			grabber.stop();
 			grabber.close();
 			rtspSocket.close();
-			System.err.println("与推流地址建立连接失败...");
+			logger.error("与推流IP：   " + config.getPush_host() + "   端口：   " + config.getPush_port() + " 建立TCP连接失败！");
 			return null;
 		}
+
+		logger.debug("******   TCPCheck    END     ******");
 
 		if (cameraPojo.getRtsp().indexOf("rtsp") >= 0) {
 			grabber.setOption("rtsp_transport", "tcp");// tcp用于解决丢包问题
 		}
 		// 设置采集器构造超时时间
 		grabber.setOption("stimeout", "2000000");
-
 		try {
-			grabber.start();
+			logger.debug("******   grabber.start()    BEGIN   ******");
+
+			if ("sub".equals(cameraPojo.getStream())) {
+				grabber.start(config.getSub_code());
+			} else if ("main".equals(cameraPojo.getStream())) {
+				grabber.start(config.getMain_code());
+			} else {
+				grabber.start(config.getMain_code());
+			}
+
+			logger.debug("******   grabber.start()    END     ******");
+
 			// 开始之后ffmpeg会采集视频信息，之后就可以获取音视频信息
 			width = grabber.getImageWidth();
 			height = grabber.getImageHeight();
-			// 若视频像素值为0，说明采集器构造超时，程序结束
+			// 若视频像素值为0，说明拉流异常，程序结束
 			if (width == 0 && height == 0) {
-				System.err.println("[ERROR]   拉流超时...");
+				logger.error(cameraPojo.getRtsp() + "  拉流异常！");
 				grabber.stop();
 				grabber.close();
 				return null;
 			}
 			// 视频参数
 			audiocodecid = grabber.getAudioCodec();
-			System.err.println("音频编码：" + audiocodecid);
 			codecid = grabber.getVideoCodec();
 			framerate = grabber.getVideoFrameRate();// 帧率
 			bitrate = grabber.getVideoBitrate();// 比特率
@@ -131,6 +146,7 @@ public class CameraPush {
 				audioBitrate = 128 * 1000;// 默认音频比特率
 			}
 		} catch (org.bytedeco.javacv.FrameGrabber.Exception e) {
+			logger.error("ffmpeg错误信息：", e);
 			grabber.stop();
 			grabber.close();
 			return null;
@@ -164,7 +180,17 @@ public class CameraPush {
 			record.setVideoCodec(codecid);
 			fc = grabber.getFormatContext();
 		}
-		record.start(fc);
+		try {
+			record.start(fc);
+		} catch (Exception e) {
+			logger.error(cameraPojo.getRtsp() + "  推流异常！");
+			logger.error("ffmpeg错误信息：", e);
+			grabber.stop();
+			grabber.close();
+			record.stop();
+			record.close();
+			return null;
+		}
 		return this;
 
 	}
@@ -181,12 +207,15 @@ public class CameraPush {
 			throws org.bytedeco.javacv.FrameGrabber.Exception, org.bytedeco.javacv.FrameRecorder.Exception {
 		long err_index = 0;// 采集或推流导致的错误次数
 		// 连续五次没有采集到帧则认为视频采集结束，程序错误次数超过5次即中断程序
+		logger.info(cameraPojo.getRtsp() + " 开始推流...");
 		for (int no_frame_index = 0; no_frame_index < 5 || err_index < 5;) {
 			try {
 				// 用于中断线程时，结束该循环
 				nowThread.sleep(1);
 				AVPacket pkt = null;
 				// 获取没有解码的音视频帧
+				// 释放探测时缓存下来的数据帧，避免pts初始值不为0导致画面延时
+				grabber.flush();
 				pkt = grabber.grabPacket();
 				if (pkt == null || pkt.size() <= 0 || pkt.data() == null) {
 					// 空包记录次数跳过
@@ -196,6 +225,7 @@ public class CameraPush {
 				}
 				// 不需要编码直接把音视频帧推出去
 				err_index += (record.recordPacket(pkt) ? 0 : 1);
+
 				av_packet_unref(pkt);
 			} catch (InterruptedException e) {
 				// 销毁构造器
@@ -203,7 +233,7 @@ public class CameraPush {
 				grabber.close();
 				record.stop();
 				record.close();
-				System.err.println("设备中断推流成功...");
+				logger.info(cameraPojo.getRtsp() + " 中断推流成功！");
 				break;
 			} catch (org.bytedeco.javacv.FrameGrabber.Exception e) {
 				err_index++;
@@ -216,7 +246,7 @@ public class CameraPush {
 		grabber.close();
 		record.stop();
 		record.close();
-		System.err.println("设备推流完毕...");
+		logger.info(cameraPojo.getRtsp() + " 推流结束...");
 		return this;
 	}
 }

@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,8 @@ import com.junction.pojo.Config;
 @Component
 public class TimerUtil implements CommandLineRunner {
 
+	private final static Logger logger = LoggerFactory.getLogger(TimerUtil.class);
+
 	@Autowired
 	private Config config;// 配置文件bean
 
@@ -36,7 +40,7 @@ public class TimerUtil implements CommandLineRunner {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				System.err.println("开始执行定时任务...");
+				logger.info("******   执行定时任务       BEGIN   ******");
 				// 管理缓存
 				if (null != CacheUtil.STREAMMAP && 0 != CacheUtil.STREAMMAP.size()) {
 					Set<String> keys = CacheUtil.STREAMMAP.keySet();
@@ -56,16 +60,16 @@ public class TimerUtil implements CommandLineRunner {
 								CameraController.jobMap.remove(key);
 							} else if ((newTime - openTime) / 1000 / 60 > Integer.valueOf(config.getKeepalive())) {
 								CameraController.jobMap.get(key).setInterrupted();
+								logger.debug("[定时任务：]  结束： " + CacheUtil.STREAMMAP.get(key).getRtsp() + "  推流任务！");
 								CameraController.jobMap.remove(key);
 								CacheUtil.STREAMMAP.remove(key);
-								System.err.println("[定时任务]  关闭" + key + "摄像头...");
 							}
 						} catch (ParseException e) {
 							e.printStackTrace();
 						}
 					}
 				}
-				System.err.println("定时任务执行完毕...");
+				logger.info("******   执行定时任务       END     ******");
 			}
 		}, 1, 1000 * 60);
 	}

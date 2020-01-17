@@ -3,6 +3,9 @@ package com.junction.thread;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.junction.cache.CacheUtil;
 import com.junction.controller.CameraController;
 import com.junction.pojo.CameraPojo;
@@ -15,7 +18,11 @@ import com.junction.util.CameraPush;
  * @author wuguodong
  **/
 public class CameraThread {
+
+	private final static Logger logger = LoggerFactory.getLogger(CameraThread.class);
+
 	public static class MyRunnable implements Runnable {
+
 		// 创建线程池
 		public static ExecutorService es = Executors.newCachedThreadPool();
 
@@ -47,11 +54,9 @@ public class CameraThread {
 				CacheUtil.STREAMMAP.remove(cameraPojo.getToken());
 				CameraController.jobMap.remove(cameraPojo.getToken());
 			} catch (Exception e) {
-				System.err.println(
-						"当前线程：" + Thread.currentThread().getName() + " 当前任务：" + cameraPojo.getRtsp() + "停止...");
+				logger.error("当前任务： " + cameraPojo.getRtsp() + "停止...");
 				CacheUtil.STREAMMAP.remove(cameraPojo.getToken());
 				CameraController.jobMap.remove(cameraPojo.getToken());
-				e.printStackTrace();
 			}
 		}
 	}

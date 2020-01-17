@@ -90,7 +90,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.bytedeco.ffmpeg.avcodec.AVCodec;
 import org.bytedeco.ffmpeg.avcodec.AVCodecContext;
@@ -98,7 +97,6 @@ import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
 import org.bytedeco.ffmpeg.avcodec.AVPacket;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.ffmpeg.avformat.AVIOContext;
-import org.bytedeco.ffmpeg.avformat.AVIOInterruptCB;
 import org.bytedeco.ffmpeg.avformat.AVInputFormat;
 import org.bytedeco.ffmpeg.avformat.AVStream;
 import org.bytedeco.ffmpeg.avformat.Read_packet_Pointer_BytePointer_int;
@@ -107,7 +105,6 @@ import org.bytedeco.ffmpeg.avutil.AVDictionary;
 import org.bytedeco.ffmpeg.avutil.AVDictionaryEntry;
 import org.bytedeco.ffmpeg.avutil.AVFrame;
 import org.bytedeco.ffmpeg.avutil.AVRational;
-import org.bytedeco.ffmpeg.presets.avformat;
 import org.bytedeco.ffmpeg.swresample.SwrContext;
 import org.bytedeco.ffmpeg.swscale.SwsContext;
 import org.bytedeco.javacpp.BytePointer;
@@ -908,13 +905,13 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 		return oc;
 	}
 
-	public void start() throws Exception {
+	public void start(String streamCode) throws Exception {
 		synchronized (org.bytedeco.ffmpeg.global.avcodec.class) {
-			startUnsafe();
+			startUnsafe(streamCode);
 		}
 	}
 
-	public void startUnsafe() throws Exception {
+	public void startUnsafe(String streamCode) throws Exception {
 		if (oc != null && !oc.isNull()) {
 			throw new Exception("start() has already been called: Call stop() before calling start() again.");
 		}
@@ -976,7 +973,6 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 			filename = inputStream.toString();
 			inputStreams.put(oc, inputStream);
 		}
-
 		if ((ret = avformat_open_input(oc, filename, f, options)) < 0) {
 			av_dict_set(options, "pixel_format", null, 0);
 			if ((ret = avformat_open_input(oc, filename, f, options)) < 0) {
@@ -987,12 +983,18 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 		av_dict_free(options);
 
 		oc.max_delay(maxDelay);
-
 		// Retrieve stream information
+		// 限制avformat_find_stream_info接口内部读取的最大数据量
+		oc.probesize(Integer.parseInt(streamCode));
+		// 设置avformat_find_stream_info这个函数的持续时长，超过这个时间不结束也会结束
+		oc.max_analyze_duration(5 * AV_TIME_BASE);
+		// 将avformat_find_stream_info内部读取的数据包不放入AVFormatContext的缓冲区packet_buffer中
+		oc.flags(AVFormatContext.AVFMT_FLAG_NOBUFFER);
+
+		AVDictionary optionOut = new AVDictionary(null);
 		if ((ret = avformat_find_stream_info(oc, (PointerPointer) null)) < 0) {
 			throw new Exception("avformat_find_stream_info() error " + ret + ": Could not find stream information.");
 		}
-
 		if (av_log_get_level() >= AV_LOG_INFO) {
 			// Dump information about file onto standard error
 			av_dump_format(oc, 0, filename, 0);
@@ -1507,5 +1509,10 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 		}
 
 		return pkt;
+	}
+
+	@Override
+	public void start() throws Exception {
+
 	}
 }

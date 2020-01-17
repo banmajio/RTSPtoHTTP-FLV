@@ -11,6 +11,7 @@ public class CameraPojo implements Serializable {
 	private String stream;// 摄像头码流
 	private String rtsp;// rtsp地址
 	private String rtmp;// rtmp地址
+	private String url;// 播放地址
 	private String startTime;// 回放开始时间
 	private String endTime;// 回放结束时间
 	private String openTime;// 打开时间
@@ -111,6 +112,22 @@ public class CameraPojo implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@Override
+	public String toString() {
+		return "CameraPojo [username=" + username + ", password=" + password + ", ip=" + ip + ", channel=" + channel
+				+ ", stream=" + stream + ", rtsp=" + rtsp + ", rtmp=" + rtmp + ", url=" + url + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", openTime=" + openTime + ", count=" + count + ", token="
+				+ token + "]";
 	}
 
 }

@@ -6,6 +6,20 @@ config:
 #直播流保活时间(分钟)
   keepalive: ${CAMERASERVER_KEEPALIVE:5}
 #nginx推送地址
-  push_ip: ${CAMERASERVER_PUSH_IP:127.0.0.1}
+  push_host: ${CAMERASERVER_PUSH_HOST:127.0.0.1}
+#额外推送地址
+  host_extra: ${CAMERASERVER_HOST_EXTRA:127.0.0.1}
 #nginx推送端口
   push_port: ${CAMERASERVER_PUSH_PORT:1935}
+#主码流最大码率
+  main_code: ${CAMERASERVER_MAIN_CODE:5120}
+#子码流最大码率
+  sub_code: ${CAMERASERVER_SUB_CODE:1024} 
+  
+#logback
+logging: 
+  level:
+    com.junction: debug
+#将日志输出到文件    
+  config: classpath:camera-log.xml
+
