@@ -208,14 +208,14 @@ public class CameraPush {
 		long err_index = 0;// 采集或推流导致的错误次数
 		// 连续五次没有采集到帧则认为视频采集结束，程序错误次数超过5次即中断程序
 		logger.info(cameraPojo.getRtsp() + " 开始推流...");
+		// 释放探测时缓存下来的数据帧，避免pts初始值不为0导致画面延时
+		grabber.flush();
 		for (int no_frame_index = 0; no_frame_index < 5 || err_index < 5;) {
 			try {
 				// 用于中断线程时，结束该循环
 				nowThread.sleep(1);
 				AVPacket pkt = null;
 				// 获取没有解码的音视频帧
-				// 释放探测时缓存下来的数据帧，避免pts初始值不为0导致画面延时
-				grabber.flush();
 				pkt = grabber.grabPacket();
 				if (pkt == null || pkt.size() <= 0 || pkt.data() == null) {
 					// 空包记录次数跳过
