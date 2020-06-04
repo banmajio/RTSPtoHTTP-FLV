@@ -12,7 +12,7 @@
 
 > 参考：[javaCV开发详解之8：转封装在rtsp转rtmp流中的应用（无须转码，更低的资源消耗）](https://blog.csdn.net/eguid_1/article/details/83025621)
 
-## 用到的技术：FFmpeg、JavaCV、ngingx
+## 用到的技术：FFmpeg、JavaCV、nginx
 
 ## 项目背景：将海康摄像头的rtsp流转为rtmp流，配合video.js实现web端播放。
 
