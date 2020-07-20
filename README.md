@@ -27,8 +27,11 @@
 
 1.因为海康nvr的限制，在进行历史回放的时候，会存在报错：**453 Not Enough Bandwidth（带宽不足）；**目前无法解决该问题。
 但是如果仅仅为了直播，该项目可以满足需求。
+>**出现此问题的原因参考：**[使用rtsp带starttime和endtime进行历史回放报453 Not Enough Bandwidth（带宽不足）](https://blog.csdn.net/weixin_40777510/article/details/106802234) 
 
-2.对于上述历史回放的问题，现在已经通过对接海康的sdk进行二次开发，通过sdk回调的码流数据自行处理推到rtmp。目前该项目基本功能已经完成，还在继续优化，后期决定是否开源~
+2.对于上述历史回放的问题，现在已经通过对接海康的sdk进行二次开发，通过sdk回调的码流数据自行处理推到rtmp。
+>**实现思路参考：**[海康sdk捕获码流数据通过JavaCV推成rtmp流的实现思路(PS流转封装RTMP)](https://blog.csdn.net/weixin_40777510/article/details/105840823)
+
 
 >**项目搭建过程请参考本人博文：[FFmpeg转封装rtsp到rtmp（无需转码，低资源消耗）](https://www.banmajio.com/post/638986b0.html#more)**
 
