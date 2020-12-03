@@ -18,6 +18,7 @@ public class Config {
 	private String push_port;// 推送端口
 	private String main_code;// 主码流最大码率
 	private String sub_code;// 主码流最大码率
+	private String version;// 版本信息
 
 	public String getHost_extra() {
 		return host_extra;
@@ -67,9 +68,19 @@ public class Config {
 		this.sub_code = sub_code;
 	}
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	@Override
 	public String toString() {
-		return "Config [keepalive=" + keepalive + ", push_host=" + push_host + ", push_port=" + push_port + "]";
+		return "Config [keepalive=" + keepalive + ", push_host=" + push_host + ", host_extra=" + host_extra
+				+ ", push_port=" + push_port + ", main_code=" + main_code + ", sub_code=" + sub_code + ", version="
+				+ version + "]";
 	}
 
 }

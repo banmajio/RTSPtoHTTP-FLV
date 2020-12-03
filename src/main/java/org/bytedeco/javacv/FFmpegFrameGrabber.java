@@ -989,7 +989,7 @@ public class FFmpegFrameGrabber extends FrameGrabber {
 		// 设置avformat_find_stream_info这个函数的持续时长，超过这个时间不结束也会结束
 		oc.max_analyze_duration(5 * AV_TIME_BASE);
 		// 将avformat_find_stream_info内部读取的数据包不放入AVFormatContext的缓冲区packet_buffer中
-		oc.flags(AVFormatContext.AVFMT_FLAG_NOBUFFER);
+//		oc.flags(AVFormatContext.AVFMT_FLAG_NOBUFFER);
 
 		AVDictionary optionOut = new AVDictionary(null);
 		if ((ret = avformat_find_stream_info(oc, (PointerPointer) null)) < 0) {

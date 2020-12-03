@@ -12,9 +12,9 @@ public class CameraPojo implements Serializable {
 	private String rtsp;// rtsp地址
 	private String rtmp;// rtmp地址
 	private String url;// 播放地址
-	private String startTime;// 回放开始时间
-	private String endTime;// 回放结束时间
-	private String openTime;// 打开时间
+	private String starttime;// 回放开始时间
+	private String endtime;// 回放结束时间
+	private String opentime;// 打开时间
 	private int count = 0;// 使用人数
 	private String token;
 
@@ -74,28 +74,28 @@ public class CameraPojo implements Serializable {
 		this.rtmp = rtmp;
 	}
 
-	public String getStartTime() {
-		return startTime;
+	public String getStarttime() {
+		return starttime;
 	}
 
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
 	}
 
-	public String getEndTime() {
-		return endTime;
+	public String getEndtime() {
+		return endtime;
 	}
 
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public void setEndTime(String endtime) {
+		this.endtime = endtime;
 	}
 
-	public String getOpenTime() {
-		return openTime;
+	public String getOpentime() {
+		return opentime;
 	}
 
-	public void setOpenTime(String openTime) {
-		this.openTime = openTime;
+	public void setOpentime(String opentime) {
+		this.opentime = opentime;
 	}
 
 	public int getCount() {
@@ -125,8 +125,8 @@ public class CameraPojo implements Serializable {
 	@Override
 	public String toString() {
 		return "CameraPojo [username=" + username + ", password=" + password + ", ip=" + ip + ", channel=" + channel
-				+ ", stream=" + stream + ", rtsp=" + rtsp + ", rtmp=" + rtmp + ", url=" + url + ", startTime="
-				+ startTime + ", endTime=" + endTime + ", openTime=" + openTime + ", count=" + count + ", token="
+				+ ", stream=" + stream + ", rtsp=" + rtsp + ", rtmp=" + rtmp + ", url=" + url + ", starttime="
+				+ starttime + ", endtime=" + endtime + ", opentime=" + opentime + ", count=" + count + ", token="
 				+ token + "]";
 	}
 

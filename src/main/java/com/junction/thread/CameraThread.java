@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.junction.cache.CacheUtil;
 import com.junction.controller.CameraController;
 import com.junction.pojo.CameraPojo;
-import com.junction.util.CameraPush;
+import com.junction.push.CameraPush;
 
 /**
  * @Title CameraThread.java
@@ -34,8 +34,8 @@ public class CameraThread {
 		}
 
 		// 中断线程
-		public void setInterrupted() {
-			nowThread.interrupt();
+		public void setInterrupted(String key) {
+			CacheUtil.PUSHMAP.get(key).setExitcode(1);
 		}
 
 		@Override
@@ -44,19 +44,19 @@ public class CameraThread {
 			try {
 				// 获取当前线程存入缓存
 				nowThread = Thread.currentThread();
-				CacheUtil.STREAMMAP.put(cameraPojo.getToken(), cameraPojo);
+				CacheUtil.STREATMAP.put(cameraPojo.getToken(), cameraPojo);
 				// 执行转流推流任务
-				CameraPush push = new CameraPush(cameraPojo).from();
-				if (push != null) {
-					push.to().go(nowThread);
-				}
+				CameraPush push = new CameraPush(cameraPojo);
+				CacheUtil.PUSHMAP.put(cameraPojo.getToken(), push);
+				push.push();
 				// 清除缓存
-				CacheUtil.STREAMMAP.remove(cameraPojo.getToken());
-				CameraController.jobMap.remove(cameraPojo.getToken());
+				CacheUtil.STREATMAP.remove(cameraPojo.getToken());
+				CameraController.JOBMAP.remove(cameraPojo.getToken());
+				CacheUtil.PUSHMAP.remove(cameraPojo.getToken());
 			} catch (Exception e) {
-				logger.error("当前任务： " + cameraPojo.getRtsp() + "停止...");
-				CacheUtil.STREAMMAP.remove(cameraPojo.getToken());
-				CameraController.jobMap.remove(cameraPojo.getToken());
+				CacheUtil.STREATMAP.remove(cameraPojo.getToken());
+				CameraController.JOBMAP.remove(cameraPojo.getToken());
+				CacheUtil.PUSHMAP.remove(cameraPojo.getToken());
 			}
 		}
 	}

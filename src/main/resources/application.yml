@@ -1,10 +1,10 @@
 server:
-  port: ${CAMERASERVER_SERVER_PORT:8082}
+  port: ${CAMERASERVER_SERVER_PORT:8083}
   servlet:
    context-path: /camera  
 config:
 #直播流保活时间(分钟)
-  keepalive: ${CAMERASERVER_KEEPALIVE:5}
+  keepalive: ${CAMERASERVER_KEEPALIVE:1}
 #nginx推送地址
   push_host: ${CAMERASERVER_PUSH_HOST:127.0.0.1}
 #额外推送地址
@@ -15,7 +15,9 @@ config:
   main_code: ${CAMERASERVER_MAIN_CODE:5120}
 #子码流最大码率
   sub_code: ${CAMERASERVER_SUB_CODE:1024} 
-  
+#编译版本信息
+  version: '@COMMIT_REV@.@BUILD_DATE@'
+ 
 #logback
 logging: 
   level:
