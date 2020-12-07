@@ -1,11 +1,10 @@
-# RTSPtoRTMP
-# 使用JavaCV开发的rtsp流转rtmp流并进行推流的流媒体服务
+# RTSPtoRTMP 使用JavaCV开发的rtsp流转rtmp流并进行推流的流媒体服务
 
-**开源不易，开发不易！！ 如果该项目对你有所帮助，有钱的捧个钱场打赏一下，没钱的捧个人场，博客点点关注；项目点点star和fork。感激不尽！！！**
+** 求star！！！ **
 
->**个人博客：[banmajio's blog](https://www.banmajio.com/)**
->**csdn博客：[banmajio's csdn](https://blog.csdn.net/weixin_40777510)**
->**gitee地址：[RTSPtoRTMP](https://gitee.com/banmajio/RTSPtoRTMP)**
+>*** 个人博客：[banmajio's blog](https://www.banmajio.com/)**
+>*** csdn博客：[banmajio's csdn](https://blog.csdn.net/weixin_40777510)**
+>*** gitee地址：[RTSPtoRTMP](https://gitee.com/banmajio/RTSPtoRTMP)**
 
 > 参考：[javaCV开发详解之8：转封装在rtsp转rtmp流中的应用（无须转码，更低的资源消耗）](https://blog.csdn.net/eguid_1/article/details/83025621)
 
