@@ -8,14 +8,10 @@
 >**csdn博客：[banmajio's csdn](https://blog.csdn.net/weixin_40777510)**
 >**gitee地址：[RTSPtoRTMP](https://gitee.com/banmajio/RTSPtoRTMP)**
 
-> 参考：[javaCV开发详解之8：转封装在rtsp转rtmp流中的应用（无须转码，更低的资源消耗）](https://blog.csdn.net/eguid_1/article/details/83025621)
-
-### 用到的技术：FFmpeg、JavaCV、nginx
-
-### 项目背景：将海康摄像头的rtsp流转为rtmp流，配合video.js实现web端播放。
+### 可以实现各h264编码的监控设备rtsp流转rtmp流（只需要改动controller中rtsp指令的拼接格式）
 
 #### [注]：
-该项目中的一些处理是为了满足公司项目需求添加完善的，如果需要改造扩展只需要在原来的基础上进行扩充或者剥离即可。最基本的核心操作在CameraPush.java这个类中，或者参考上述链接原作者的代码。
+该项目中的一些处理是为了满足公司项目需求添加完善的，如果需要改造扩展只需要在原来的基础上进行扩充或者剥离即可。最基本的核心操作在CameraPush.java这个类中。
 
 #### 该项目需要搭配使用的nginx服务器下载地址：
 [http://cdn.banmajio.com/nginx.rar](http://cdn.banmajio.com/nginx.rar)
