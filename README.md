@@ -10,6 +10,8 @@
 
 ### 可以实现各h264编码的监控设备rtsp流转rtmp流（只需要改动controller中rtsp指令的拼接格式）
 
+**接口调用方式：[接口文档](https://github.com/banmajio/RTSPtoRTMP/wiki/%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3)**
+
 #### [注]：
 该项目中的一些处理是为了满足公司项目需求添加完善的，如果需要改造扩展只需要在原来的基础上进行扩充或者剥离即可。最基本的核心操作在CameraPush.java这个类中。
 
