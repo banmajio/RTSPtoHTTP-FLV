@@ -2,6 +2,8 @@
 
 **求star！！！**
 
+#### 提问求助等优先提交issues，让其他遇到同样问题的朋友可以很方便找到解决方式，尽量避免直接加微信qq咨询。业务合作可发邮件到banmajio@163.com或添加微信qq咨询。
+
 >**个人博客：[banmajio's blog](https://www.banmajio.com/)**
 >**csdn博客：[banmajio's csdn](https://blog.csdn.net/weixin_40777510)**
 >**gitee地址：[RTSPtoRTMP](https://gitee.com/banmajio/RTSPtoRTMP)**
@@ -29,10 +31,6 @@
 >**项目搭建过程请参考本人博文：[FFmpeg转封装rtsp到rtmp（无需转码，低资源消耗）](https://www.banmajio.com/post/638986b0.html#more)**
 
 >**开发过程的遇到的一些问题和解决方法，会发布到csdn博客中，[banmajio csdn](https://blog.csdn.net/weixin_40777510)**
-
->提问求助等优先提交issues，让其他遇到同样问题的朋友可以很方便找到解决方式，尽量避免直接加微信qq咨询。业务合作可发邮件到banmajio@163.com或添加微信qq咨询。
-
-**主分支只作为一个简单的模板供大家使用，所以一些新加的功能就不合并到主分支了，如果有pr，请提交到pr分支内。**
 
 **感谢[nn200433](https://github.com/nn200433)小伙伴对本项目的支持，详细改动请参考rp分支内的提交内容**
 
