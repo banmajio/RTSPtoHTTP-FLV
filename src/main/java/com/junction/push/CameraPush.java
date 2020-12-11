@@ -40,6 +40,7 @@ public class CameraPush {
 	private FFmpegFrameGrabber grabber;// 采集器
 	private int err_index = 0;// 推流过程中出现错误的次数
 	private int exitcode = 0;// 退出状态码：0-正常退出;1-手动中断;
+	private double framerate = 0;// 帧率
 
 	public void setExitcode(int exitcode) {
 		this.exitcode = exitcode;
@@ -91,6 +92,13 @@ public class CameraPush {
 			} else {
 				grabber.start(config.getMain_code());
 			}
+
+			// 部分监控设备流信息里携带的帧率为9000，如出现此问题，会导致dts、pts时间戳计算失败，播放器无法播放，故出现错误的帧率时，默认为25帧
+			if (grabber.getFrameRate() > 0 && grabber.getFrameRate() < 100) {
+				framerate = grabber.getFrameRate();
+			} else {
+				framerate = 25.0;
+			}
 			int width = grabber.getImageWidth();
 			int height = grabber.getImageHeight();
 			// 若视频像素值为0，说明拉流异常，程序结束
@@ -104,9 +112,9 @@ public class CameraPush {
 			recorder = new FFmpegFrameRecorder(pojo.getRtmp(), grabber.getImageWidth(), grabber.getImageHeight());
 			recorder.setInterleaved(true);
 			// 关键帧间隔，一般与帧率相同或者是视频帧率的两倍
-			recorder.setGopSize((int) grabber.getFrameRate() * 2);
+			recorder.setGopSize((int) framerate * 2);
 			// 视频帧率(保证视频质量的情况下最低25，低于25会出现闪屏)
-			recorder.setFrameRate(grabber.getFrameRate());
+			recorder.setFrameRate(framerate);
 			// 设置比特率
 			recorder.setVideoBitrate(grabber.getVideoBitrate());
 			// 封装flv格式
@@ -166,14 +174,14 @@ public class CameraPush {
 				err_index += (recorder.recordPacket(pkt) ? 0 : 1);
 				// pts,dts累加
 				timebase = grabber.getFormatContext().streams(pkt.stream_index()).time_base().den();
-				pts += timebase / (int) grabber.getFrameRate();
-				dts += timebase / (int) grabber.getFrameRate();
+				pts += timebase / (int) framerate;
+				dts += timebase / (int) framerate;
 				// 将缓存空间的引用计数-1，并将Packet中的其他字段设为初始值。如果引用计数为0，自动的释放缓存空间。
 				av_packet_unref(pkt);
 
 				long endtime = System.currentTimeMillis();
-				if ((long) (1000 / grabber.getFrameRate()) - (endtime - time1) > 0) {
-					Thread.sleep((long) (1000 / grabber.getFrameRate()) - (endtime - time1));
+				if ((long) (1000 /framerate) - (endtime - time1) > 0) {
+					Thread.sleep((long) (1000 / framerate) - (endtime - time1));
 				}
 			}
 		} catch (Exception e) {
