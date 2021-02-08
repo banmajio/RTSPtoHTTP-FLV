@@ -4,6 +4,10 @@
 
 #### 提问求助等优先提交issues，让其他遇到同样问题的朋友可以很方便找到解决方式，尽量避免直接加微信qq咨询。业务合作可发邮件到banmajio@163.com或添加微信qq咨询。
 
+### 各大浏览器目前均已不再支持flash，故推荐使用http-flv来代替rtmp使用。
+>[参考资料](https://blog.csdn.net/weixin_40777510/article/details/106693408)
+>只需修改本项目controller中rtmp地址生成的地方改为生成http-flv地址即可，各流媒体服务器对于http-flv地址规则可能会有差异，根据所选流媒体服务器来制定http-flv地址。
+
 >**个人博客：[banmajio's blog](https://www.banmajio.com/)**
 >**csdn博客：[banmajio's csdn](https://blog.csdn.net/weixin_40777510)**
 >**gitee地址：[RTSPtoRTMP](https://gitee.com/banmajio/RTSPtoRTMP)**
