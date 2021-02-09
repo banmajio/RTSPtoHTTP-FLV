@@ -1,4 +1,4 @@
-## RTSPtoHTTP-FLV 使用JavaCV开发的rtsp流转rtmp流并进行推流的流媒体服务
+## RTSPtoHTTP-FLV 使用JavaCV开发的rtsp流转http-flv流（rtmp已不推荐）并进行推流的流媒体服务
 
 **求star！！！**
 
