@@ -36,7 +36,10 @@
 
 **感谢[nn200433](https://github.com/nn200433)小伙伴对本项目的支持，详细改动请参考rp分支内的提交内容**
 
-### 碎银打赏，以资奖励
+### 碎银打赏
 <img src="https://images.gitee.com/uploads/images/2020/0421/174552_a862b4ed_5186477.jpeg" width="200px" />
 
-<img src="https://images.gitee.com/uploads/images/2020/0421/174726_cb99c1d6_5186477.jpeg" width="200px" />
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=banmajio/RTSPtoHTTP-FLV&type=Date)](https://star-history.com/#banmajio/RTSPtoHTTP-FLV&Date)
