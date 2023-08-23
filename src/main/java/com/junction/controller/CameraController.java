@@ -32,7 +32,7 @@ import com.junction.util.Utils;
  * @Title CameraController.java
  * @description controller
  * @time 2019年12月16日 上午9:00:27
- * @author wuguodong
+ * @author banmajio
  **/
 
 @RestController
@@ -41,7 +41,7 @@ public class CameraController {
 	private final static Logger logger = LoggerFactory.getLogger(CameraController.class);
 
 	@Autowired
-	public Config config;// 配置文件bean
+	public Config config;
 
 	// 存放任务 线程
 	public static Map<String, CameraThread.MyRunnable> JOBMAP = new HashMap<String, CameraThread.MyRunnable>();
