@@ -10,20 +10,27 @@ import com.junction.push.CameraPush;
  * @Title CacheUtil.java
  * @description 推流缓存信息
  * @time 2019年12月17日 下午3:12:45
- * @author wuguodong
+ * @author banmajio
  **/
 public final class CacheUtil {
-	/*
-	 * 保存已经开始推的流
+	/**
+	 * @description: 保存已经开始的推流
+	 * @author: banmajio
+	 * @date: 2023/8/30 09:11
 	 */
-	public static Map<String, CameraPojo> STREATMAP = new ConcurrentHashMap<String, CameraPojo>();
+	public static Map<String, CameraPojo> STREATMAP = new ConcurrentHashMap<>();
 
-	/*
-	 * 保存push
+	/**
+	 * @description: 保存push
+	 * @author: banmajio
+	 * @date: 2023/8/30 09:12
 	 */
 	public static Map<String, CameraPush> PUSHMAP = new ConcurrentHashMap<>();
-	/*
-	 * 保存服务启动时间
+	
+	/**
+	 * @description: 保存服务启动时间
+	 * @author: banmajio 
+	 * @date: 2023/8/30 09:13
 	 */
 	public static long STARTTIME;
 
