@@ -107,16 +107,16 @@ public class Utils {
 	 * @return starttime
 	 **/
 	public static String getStarttime(String time) {
-		String starttime = null;
-		try {
-			starttime = new SimpleDateFormat("yyyyMMddHHmmss")
-					.format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time).getTime() - 60 * 1000);
-		} catch (Exception e) {
-			logger.error("时间格式化错误");
-			e.printStackTrace();
-		}
-		return starttime;
-	}
+        String startTime = null;
+        try {
+            startTime = new SimpleDateFormat("yyyyMMddHHmmss")
+                    .format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(time).getTime() - 60 * 1000);
+        } catch (Exception e) {
+            logger.error("时间格式化错误");
+            e.printStackTrace();
+        }
+        return startTime;
+    }
 
 	/**
 	 * @Title: getEndtime
