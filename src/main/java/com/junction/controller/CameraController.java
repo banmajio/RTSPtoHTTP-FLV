@@ -26,12 +26,21 @@ import java.util.*;
 @RestController
 public class CameraController {
 
+    private final String ERRORCODE = "errorCode";
+
+    private final String LOCALHOST = "127.0.0.1";
+
+
     private final static Logger logger = LoggerFactory.getLogger(CameraController.class);
 
     @Resource
     public Config config;
 
-    // 存放任务 线程
+    /**
+     * @description: 存放任务 线程
+     * @author: banmajio
+     * @date: 2023/9/4 10:52
+     */
     public static Map<String, CameraThread.MyRunnable> JOBMAP = new HashMap<>();
 
     /**
@@ -99,14 +108,14 @@ public class CameraController {
             // 开始推流
             openMap = openStream(pojo.getIp(), pojo.getUsername(), pojo.getPassword(), pojo.getChannel(),
                     pojo.getStream(), pojo.getStarttime(), pojo.getEndTime(), openTime);
-            if (Integer.parseInt(openMap.get("errorcode").toString()) == 0) {
+            if (Integer.parseInt(openMap.get(ERRORCODE).toString()) == 0) {
                 map.put("url", ((CameraPojo) openMap.get("pojo")).getUrl());
                 map.put("token", ((CameraPojo) openMap.get("pojo")).getToken());
                 map.put("msg", "打开视频流成功");
                 map.put("code", 0);
             } else {
                 map.put("msg", openMap.get("message"));
-                map.put("code", openMap.get("errorcode"));
+                map.put("code", openMap.get("errorCode"));
             }
         } else {
             // 是否存在的标志；false：不存在；true：存在
@@ -134,14 +143,14 @@ public class CameraController {
                 } else {
                     openMap = openStream(pojo.getIp(), pojo.getUsername(), pojo.getPassword(), pojo.getChannel(),
                             pojo.getStream(), pojo.getStarttime(), pojo.getEndTime(), openTime);
-                    if (Integer.parseInt(openMap.get("errorcode").toString()) == 0) {
+                    if (Integer.parseInt(openMap.get(ERRORCODE).toString()) == 0) {
                         map.put("url", ((CameraPojo) openMap.get("pojo")).getUrl());
                         map.put("token", ((CameraPojo) openMap.get("pojo")).getToken());
                         map.put("msg", "打开视频流成功");
                         map.put("code", 0);
                     } else {
                         map.put("msg", openMap.get("message"));
-                        map.put("code", openMap.get("errorcode"));
+                        map.put("code", openMap.get(ERRORCODE));
                     }
                 }
 
@@ -165,14 +174,14 @@ public class CameraController {
                 } else {
                     openMap = openStream(pojo.getIp(), pojo.getUsername(), pojo.getPassword(), pojo.getChannel(),
                             pojo.getStream(), pojo.getStarttime(), pojo.getEndTime(), openTime);
-                    if (Integer.parseInt(openMap.get("errorcode").toString()) == 0) {
+                    if (Integer.parseInt(openMap.get(ERRORCODE).toString()) == 0) {
                         map.put("url", ((CameraPojo) openMap.get("pojo")).getUrl());
                         map.put("token", ((CameraPojo) openMap.get("pojo")).getToken());
                         map.put("msg", "打开视频流成功");
                         map.put("code", 0);
                     } else {
                         map.put("msg", openMap.get("message"));
-                        map.put("code", openMap.get("errorcode"));
+                        map.put("code", openMap.get(ERRORCODE));
                     }
                 }
             }
@@ -220,7 +229,7 @@ public class CameraController {
 //			rtmp = "rtmp://" + Utils.IpConvert(config.getPush_host()) + ":" + config.getPush_port() + "/history/"
 //					+ token;
             rtmp = "rtmp://" + Utils.IpConvert(config.getPushHost()) + ":" + config.getPushPort() + "/history/test";
-            if ("127.0.0.1".equals(config.getHostExtra())) {
+            if (LOCALHOST.equals(config.getHostExtra())) {
                 url = rtmp;
             } else {
                 url = "rtmp://" + Utils.IpConvert(config.getHostExtra()) + ":" + config.getPushPort() + "/history/"
@@ -231,7 +240,7 @@ public class CameraController {
             rtsp = "rtsp://" + username + ":" + password + "@" + IP + ":554/h264/ch" + channel + "/" + stream
                     + "/av_stream";
             rtmp = "rtmp://" + Utils.IpConvert(config.getPushHost()) + ":" + config.getPushPort() + "/live/" + token;
-            if (config.getHostExtra().equals("127.0.0.1")) {
+            if (config.getHostExtra().equals(LOCALHOST)) {
                 url = rtmp;
             } else {
                 url = "rtmp://" + Utils.IpConvert(config.getHostExtra()) + ":" + config.getPushPort() + "/live/"
@@ -261,7 +270,7 @@ public class CameraController {
         } catch (IOException e) {
             logger.error("与拉流IP：   " + cameraPojo.getIp() + "   端口：   554    建立TCP连接失败！");
             map.put("pojo", cameraPojo);
-            map.put("errorcode", 6);
+            map.put(ERRORCODE, 6);
             map.put("message", "与拉流IP：   " + cameraPojo.getIp() + "   端口：   554    建立TCP连接失败！");
             return map;
         }
@@ -271,7 +280,7 @@ public class CameraController {
         } catch (IOException e) {
             logger.error("与推流IP：   " + config.getPushHost() + "   端口：   " + config.getPushPort() + " 建立TCP连接失败！");
             map.put("pojo", cameraPojo);
-            map.put("errorcode", 7);
+            map.put(ERRORCODE, 7);
             map.put("message",
                     "与推流IP:" + config.getPushHost() + " 端口: " + config.getPushPort() + " 建立连接失败,请检查nginx服务");
             return map;
@@ -281,7 +290,7 @@ public class CameraController {
         CameraThread.MyRunnable.es.execute(job);
         JOBMAP.put(token, job);
         map.put("pojo", cameraPojo);
-        map.put("errorcode", 0);
+        map.put(ERRORCODE, 0);
         map.put("message", "打开视频流成功");
         return map;
     }
@@ -295,7 +304,7 @@ public class CameraController {
      */
     @RequestMapping(value = "/cameras/{tokens}", method = RequestMethod.DELETE)
     public void closeCamera(@PathVariable("tokens") String tokens) {
-        if (null != tokens && !"".equals(tokens)) {
+        if (null != tokens && !tokens.isEmpty()) {
             String[] tokenArr = tokens.split(",");
             for (String token : tokenArr) {
                 if (JOBMAP.containsKey(token) && CacheUtil.STREATMAP.containsKey(token)) {
@@ -309,8 +318,8 @@ public class CameraController {
                             logger.info("当前设备正在进行回放，使用人数为" + CacheUtil.STREATMAP.get(token).getCount() + " 设备信息：[ip："
                                     + CacheUtil.STREATMAP.get(token).getIp() + " channel:"
                                     + CacheUtil.STREATMAP.get(token).getChannel() + " stream:"
-                                    + CacheUtil.STREATMAP.get(token).getStream() + " statrtime:"
-                                    + CacheUtil.STREATMAP.get(token).getStream() + " endtime:"
+                                    + CacheUtil.STREATMAP.get(token).getStream() + " startTime:"
+                                    + CacheUtil.STREATMAP.get(token).getStarttime() + " endTime:"
                                     + CacheUtil.STREATMAP.get(token).getEndTime() + " url:"
                                     + CacheUtil.STREATMAP.get(token).getUrl() + "]");
                         }
@@ -321,8 +330,8 @@ public class CameraController {
                             logger.info("关闭成功 当前设备使用人数为" + CacheUtil.STREATMAP.get(token).getCount() + " 设备信息：[ip："
                                     + CacheUtil.STREATMAP.get(token).getIp() + " channel:"
                                     + CacheUtil.STREATMAP.get(token).getChannel() + " stream:"
-                                    + CacheUtil.STREATMAP.get(token).getStream() + " statrtime:"
-                                    + CacheUtil.STREATMAP.get(token).getStream() + " endtime:"
+                                    + CacheUtil.STREATMAP.get(token).getStream() + " startTime:"
+                                    + CacheUtil.STREATMAP.get(token).getStarttime() + " endTime:"
                                     + CacheUtil.STREATMAP.get(token).getEndTime() + " url:"
                                     + CacheUtil.STREATMAP.get(token).getUrl() + "]");
                         }
