@@ -66,7 +66,7 @@ public class CameraPojo implements Serializable {
      * @author: banmajio
      * @date: 2023/8/30 09:22
      */
-    private String endtime;
+    private String endTime;
     /**
      * @description: 打开时间
      * @author: banmajio
