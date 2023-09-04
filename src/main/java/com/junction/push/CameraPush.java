@@ -30,7 +30,10 @@ public class CameraPush {
     private final static Logger logger = LoggerFactory.getLogger(CameraPush.class);
     private static Config config;
 
-    // 通过applicationContext上下文获取Config类
+    /**
+     * @description: 通过applicationContext上下文获取Config类
+     * @author: banmajio
+     */
     public static void setApplicationContext(ApplicationContext applicationContext) {
         config = applicationContext.getBean(Config.class);
     }
@@ -71,6 +74,10 @@ public class CameraPush {
      * @date: 2023/8/30 09:44
      */
     private double frameRate = 0;
+
+    public CameraPush(CameraPojo pojo) {
+        this.pojo = pojo;
+    }
 
     /**
      * @return void
