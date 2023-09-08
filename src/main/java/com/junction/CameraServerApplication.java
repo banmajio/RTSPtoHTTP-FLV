@@ -1,10 +1,9 @@
 package com.junction;
 
-import java.util.Date;
-import java.util.Set;
-
-import javax.annotation.PreDestroy;
-
+import com.junction.cache.CacheUtil;
+import com.junction.controller.CameraController;
+import com.junction.push.CameraPush;
+import com.junction.thread.CameraThread;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.slf4j.Logger;
@@ -13,11 +12,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import com.junction.cache.CacheUtil;
-import com.junction.controller.CameraController;
-import com.junction.push.CameraPush;
-import com.junction.thread.CameraThread;
-import com.junction.timer.CameraTimer;
+import javax.annotation.PreDestroy;
+import java.util.Set;
 
 @SpringBootApplication
 public class CameraServerApplication {
@@ -29,13 +25,11 @@ public class CameraServerApplication {
 		try {
 			FFmpegFrameGrabber.tryLoad();
 			FFmpegFrameRecorder.tryLoad();
-		} catch (org.bytedeco.javacv.FrameRecorder.Exception e) {
-			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 		// 将服务启动时间存入缓存
-		CacheUtil.STARTTIME = new Date().getTime();
+		CacheUtil.STARTTIME = System.currentTimeMillis();
 		final ApplicationContext applicationContext = SpringApplication.run(CameraServerApplication.class, args);
 		// 将上下文传入RealPlay类中,以使其使用config中的变量
 		CameraPush.setApplicationContext(applicationContext);
@@ -51,7 +45,5 @@ public class CameraServerApplication {
 		}
 		// 关闭线程池
 		CameraThread.MyRunnable.es.shutdown();
-		// 销毁定时器
-		CameraTimer.timer.cancel();
 	}
 }

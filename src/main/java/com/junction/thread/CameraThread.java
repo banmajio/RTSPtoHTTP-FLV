@@ -12,11 +12,10 @@ import com.junction.pojo.CameraPojo;
 import com.junction.push.CameraPush;
 
 /**
- * @Title CameraThread.java
- * @description TODO
- * @time 2019年12月16日 上午9:32:43
- * @author wuguodong
- **/
+ * @description: 推流线程
+ * @author: banmajio
+ * @date: 2023/9/8 13:36
+ */
 public class CameraThread {
 
 	public static class MyRunnable implements Runnable {

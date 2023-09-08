@@ -73,13 +73,13 @@ public class CameraController {
         }
         if (null != pojo.getStarttime()) {
             // 开始时间校验
-            if (!Utils.isTrueTime(pojo.getStarttime())) {
+            if (Utils.isTrueTime(pojo.getStarttime())) {
                 map.put("msg", "startTime格式输入错误");
                 map.put("code", 3);
                 return map;
             }
             if (null != pojo.getEndTime()) {
-                if (!Utils.isTrueTime(pojo.getEndTime())) {
+                if (Utils.isTrueTime(pojo.getEndTime())) {
                     map.put("msg", "endTime格式输入错误");
                     map.put("code", 4);
                     return map;
@@ -204,7 +204,7 @@ public class CameraController {
         String token = UUID.randomUUID().toString();
         String rtsp;
         String rtmp;
-        String IP = Utils.IpConvert(ip);
+        String IP = Utils.ipConvert(ip);
         String url;
         // 该nvr是否再回放，true：在回放；false： 没在回放
         // 历史流
@@ -217,33 +217,33 @@ public class CameraController {
                 cameraPojo.setStarttime(Utils.getTime(starttime));
                 cameraPojo.setEndTime(Utils.getTime(endtime));
             } else {
-                String startTime = Utils.getStarttime(starttime);
+                String startTime = Utils.getStartTime(starttime);
                 String endTime = Utils.getEndtime(starttime);
                 rtsp = "rtsp://" + username + ":" + password + "@" + IP + ":554/Streaming/tracks/"
                         + (Integer.parseInt(channel) - 32) + "01?starttime=" + startTime.substring(0, 8) + "t"
                         + startTime.substring(8) + "z'&'endtime=" + endTime.substring(0, 8) + "t" + endTime.substring(8)
                         + "z";
-                cameraPojo.setStarttime(Utils.getStarttime(starttime));
+                cameraPojo.setStarttime(Utils.getStartTime(starttime));
                 cameraPojo.setEndTime(Utils.getEndtime(starttime));
             }
-//			rtmp = "rtmp://" + Utils.IpConvert(config.getPush_host()) + ":" + config.getPush_port() + "/history/"
+//			rtmp = "rtmp://" + Utils.ipConvert(config.getPush_host()) + ":" + config.getPush_port() + "/history/"
 //					+ token;
-            rtmp = "rtmp://" + Utils.IpConvert(config.getPushHost()) + ":" + config.getPushPort() + "/history/test";
+            rtmp = "rtmp://" + Utils.ipConvert(config.getPushHost()) + ":" + config.getPushPort() + "/history/test";
             if (LOCALHOST.equals(config.getHostExtra())) {
                 url = rtmp;
             } else {
-                url = "rtmp://" + Utils.IpConvert(config.getHostExtra()) + ":" + config.getPushPort() + "/history/"
+                url = "rtmp://" + Utils.ipConvert(config.getHostExtra()) + ":" + config.getPushPort() + "/history/"
                         + token;
             }
         } else {
             // 直播流
             rtsp = "rtsp://" + username + ":" + password + "@" + IP + ":554/h264/ch" + channel + "/" + stream
                     + "/av_stream";
-            rtmp = "rtmp://" + Utils.IpConvert(config.getPushHost()) + ":" + config.getPushPort() + "/live/" + token;
+            rtmp = "rtmp://" + Utils.ipConvert(config.getPushHost()) + ":" + config.getPushPort() + "/live/" + token;
             if (config.getHostExtra().equals(LOCALHOST)) {
                 url = rtmp;
             } else {
-                url = "rtmp://" + Utils.IpConvert(config.getHostExtra()) + ":" + config.getPushPort() + "/live/"
+                url = "rtmp://" + Utils.ipConvert(config.getHostExtra()) + ":" + config.getPushPort() + "/live/"
                         + token;
             }
         }
@@ -275,7 +275,7 @@ public class CameraController {
             return map;
         }
         try {
-            rtmpSocket.connect(new InetSocketAddress(Utils.IpConvert(config.getPushHost()),
+            rtmpSocket.connect(new InetSocketAddress(Utils.ipConvert(config.getPushHost()),
                     Integer.parseInt(config.getPushPort())), 1000);
         } catch (IOException e) {
             logger.error("与推流IP：   " + config.getPushHost() + "   端口：   " + config.getPushPort() + " 建立TCP连接失败！");

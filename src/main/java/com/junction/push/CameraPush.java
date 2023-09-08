@@ -93,7 +93,7 @@ public class CameraPush {
                 recorder.release();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -210,7 +210,6 @@ public class CameraPush {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error(e.getMessage());
         } finally {
             release();
