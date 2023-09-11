@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 
 /**
- * @author wuguodong
+ * @author banmajio
  * @Title Utils.java
  * @description 工具类
  * @time 2020年10月27日 上午9:15:56

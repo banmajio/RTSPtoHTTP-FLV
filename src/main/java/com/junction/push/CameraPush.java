@@ -64,13 +64,13 @@ public class CameraPush {
     private int errIndex = 0;
     /**
      * @description: 退出状态码：0-正常退出;1-手动中断;
-     * @author: wuguodong
+     * @author: banmajio
      * @date: 2023/8/30 09:44
      */
     private int exitCode = 0;
     /**
      * @description: 帧率
-     * @author: wuguodong
+     * @author: banmajio
      * @date: 2023/8/30 09:44
      */
     private double frameRate = 0;
